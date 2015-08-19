@@ -25,27 +25,34 @@ class linkcell:
 
     def getBoxFromTuple(self, ix, iy, iz):
         iBox = 0
+        # Halo in Z+
         if iz == self.gridSize[2]:
             iBox = self.nLocalBoxes + 2*self.gridSize[2]*self.gridSize[1] + 2*self.gridSize[2]*(self.gridSize[0]+2)  \
                    + (self.gridSize[0]+2)*(self.gridSize[1]+2) + (self.gridSize[0] + 2)*(iy+1) + (ix+1)
 
+        # Halo in Z-
         elif iz == -1:
             iBox = self.nLocalBoxes + 2*self.gridSize[2]*self.gridSize[1] + 2*self.gridSize[2]*(self.gridSize[0]+2) \
                     + (self.gridSize[0]+2)*(iy+1) + (ix+1)
 
+        # Halo in Y+
         elif iy == self.gridSize[1]:
             iBox = self.nLocalBoxes + 2*self.gridSize[2]*self.gridSize[1] + self.gridSize[2]*(self.gridSize[0]+2) \
                     + (self.gridSize[0]+2)*iz + (ix+1)
 
+        # Halo in Y-
         elif iy == -1:
             iBox = self.nLocalBoxes + 2*self.gridSize[2]*self.gridSize[1] + iz*(self.gridSize[0] + 2) + (ix+1)
 
+        # Halo in X+
         elif ix == self.gridSize[0]:
             iBox = self.nLocalBoxes + self.gridSize[1]*self.gridSize[2] + iz*self.gridSize[1] + iy
 
+        # Halo in X-
         elif ix == -1:
             iBox = self.nLocalBoxes + iz*self.gridSize[1] + iy
 
+        # Local link cell
         else:
             iBox = ix + self.gridSize[0]*iy + self.gridSize[0]*self.gridSize[1]*iz
 
@@ -58,8 +65,8 @@ class linkcell:
 
     def getBoxFromCoord(self, r):
         ix = int(math.floor(r[0]*self.invBoxSize[0]))
-        iy = int(math.floor(r[1]*self.invBoxSize[0]))
-        iz = int(math.floor(r[2]*self.invBoxSize[0]))
+        iy = int(math.floor(r[1]*self.invBoxSize[1]))
+        iz = int(math.floor(r[2]*self.invBoxSize[2]))
         #print 'ix,iy,iz',ix,iy,iz
         return self.getBoxFromTuple(ix, iy, iz)
 

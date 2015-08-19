@@ -64,9 +64,9 @@ class Halo:
                 entry['rx'] = sim.atoms.r[iOff][0] + shift[0]
                 entry['ry'] = sim.atoms.r[iOff][1] + shift[1]
                 entry['rz'] = sim.atoms.r[iOff][2] + shift[2]
-                entry['px'] = sim.atoms.p[iOff][0] + shift[0]
-                entry['py'] = sim.atoms.p[iOff][1] + shift[1]
-                entry['pz'] = sim.atoms.p[iOff][2] + shift[2]
+                entry['px'] = sim.atoms.p[iOff][0]
+                entry['py'] = sim.atoms.p[iOff][1]
+                entry['pz'] = sim.atoms.p[iOff][2]
                 buf.append(entry)
 
         return buf
