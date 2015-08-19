@@ -8,7 +8,7 @@ Directory layout is
   * \<language>
     * \<variant> (eg. parallel or serial, or different algorithms)
   
-Currently, the only app is CoMD (molecular dynamics) and only in Python.  Find more information about the available variants in [README_CoMD](comd/README_CoMD.md)
+Currently, the only app is CoMD (molecular dynamics) and only in Python.  Find more information about the available variants in [README_CoMD](CoMD/README_CoMD.md)
   
 
   
