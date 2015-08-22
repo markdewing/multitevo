@@ -76,6 +76,15 @@ def printInfo(sim, iStep, elapsedTime):
     print " {:6d} {:10.2f} {:18.12f} {:18.12f} {:18.12f} {:12.4f} {:10.4f} {:12d}".format(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n)
     #print iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n
 
+def printPerformanceResult(sim, elapsedTime):
+    n = sim.atoms.nGlobal
+    nEval = sim.nSteps
+    timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
+
+    print
+    print "Average all atom update rate: %10.2f us/atom" % timePerAtom
+    print
+
 
 def parseCommandLine():
     parser = argparse.ArgumentParser()
@@ -96,21 +105,31 @@ def run_comd():
     cmd = parseCommandLine()
     # init subsystems
     sim = simflat.initSimulation(cmd)
-    #print 'nAtoms = ',sim.atoms.nGlobal
-    #for i in range(min(sim.atoms.nAtoms, 10)):
-    #for i in range(sim.atoms.nAtoms):
-    #    print i,sim.atoms.r[i,:]
 
     sim.pot.computeForce(sim.atoms, sim)
+    sim.eKinetic = initatoms.kineticEnergy(sim)
 
     initValidate(sim)
 
-    for iStep in range(0,sim.nSteps+1,sim.printRate):
+    timestepTime = 0.0
+    timestepTimeOneIteration = 0.0
+
+    iStep = 0
+    for jStep in range(0, sim.nSteps, sim.printRate):
+        printInfo(sim, iStep, timestepTimeOneIteration)
+
         start = time.clock()
         timestep(sim, sim.printRate, sim.dt)
         end = time.clock()
 
-        printInfo(sim, iStep, end-start)
+        timestepTimeOneIteration = end - start
+        timestepTime += timestepTimeOneIteration
+
+        iStep += sim.printRate
+
+    printInfo(sim, iStep, timestepTimeOneIteration)
+
+    printPerformanceResult(sim, timestepTime)
 
     # validate result
 

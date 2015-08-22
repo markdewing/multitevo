@@ -74,9 +74,6 @@ class linkcell:
         iBox = self.getBoxFromCoord([x, y, z])
         iOff = iBox*self.MAXATOMS
         iOff += self.nAtoms[iBox]
-        if iOff >= 4096:
-            print 'error, iBox = ',iBox,' self.nAtoms = ',self.nAtoms[iBox]
-            print 'nAToms',self.nAtoms
 
         if iBox < self.nLocalBoxes:
             atoms.nLocal += 1

@@ -68,12 +68,20 @@ def printInfo(sim, iStep, elapsedTime):
     print " {:6d} {:10.2f} {:18.12f} {:18.12f} {:18.12f} {:12.4f} {:10.4f} {:12d}".format(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n)
     #print iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n
 
+def printPerformanceResults(sim, elapsedTime):
+    n = sim.atoms.nAtoms
+    nEval = sim.nSteps
+    timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
+    print
+    print "Average all atom update rate: %10.2f us/atom" % timePerAtom
+    print
+
 
 def parseCommandLine():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-x","--nx", type=int, default=20, help="number of unit cells in x")
-    parser.add_argument("-y","--ny", type=int, default=20, help="number of unit cells in y")
-    parser.add_argument("-z","--nz", type=int, default=20, help="number of unit cells in z")
+    parser.add_argument("-x","--nx", type=int, default=4, help="number of unit cells in x")
+    parser.add_argument("-y","--ny", type=int, default=4, help="number of unit cells in y")
+    parser.add_argument("-z","--nz", type=int, default=4, help="number of unit cells in z")
     parser.add_argument("-N","--nSteps", type=int, default=100, help="total number of time steps")
     parser.add_argument("-n","--printRate", type=int, default=10, help="number of steps between output")
     parser.add_argument("-D","--dt", type=float, default=1, help="time step (in fs)")
@@ -94,15 +102,31 @@ def run_comd():
     #    print i,sim.atoms.r[i,:]
 
     sim.pot.computeForce(sim.atoms, sim)
+    sim.eKinetic = initatoms.kineticEnergy(sim)
 
     initValidate(sim)
 
-    for iStep in range(0,sim.nSteps+1,sim.printRate):
+
+    timestepTime = 0.0
+    timestepTimeOneIteration = 0.0
+
+    iStep = 0
+    for jStep in range(0, sim.nSteps, sim.printRate):
+        printInfo(sim, iStep, timestepTimeOneIteration)
+
         start = time.clock()
         timestep(sim, sim.printRate, sim.dt)
         end = time.clock()
 
-        printInfo(sim, iStep, end-start)
+        timestepTimeOneIteration = end - start
+        timestepTime += timestepTimeOneIteration
+
+        iStep += sim.printRate
+
+
+    printInfo(sim, iStep, timestepTimeOneIteration)
+
+    printPerformanceResults(sim, timestepTime)
 
     # validate result
 
