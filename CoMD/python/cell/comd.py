@@ -33,6 +33,28 @@ def advancePosition(sim, atoms, dt):
 #    sim.boxes.updateLinkCells(atoms)
 #    sim.atomHalo.haloExchange(sim)
 
+def dumpPos(sim):
+    for iBox in range(sim.boxes.nLocalBoxes):
+        for ii in range(sim.boxes.nAtoms[iBox]):
+            iOff = sim.boxes.MAXATOMS * iBox + ii
+            pos = sim.atoms.r[iOff,:]
+            print "%d:  %20.10f %20.10f %20.10f"%(iOff+1, pos[0], pos[1], pos[2])
+
+def dumpVel(sim):
+    for iBox in range(sim.boxes.nLocalBoxes):
+        for ii in range(sim.boxes.nAtoms[iBox]):
+            iOff = sim.boxes.MAXATOMS * iBox + ii
+            vel = sim.atoms.p[iOff,:]
+            print "%d:  %20.10g %20.10g %20.10g"%(iOff+1, vel[0], vel[1], vel[2])
+
+def dumpForce(sim):
+    for iBox in range(sim.boxes.nLocalBoxes):
+        for ii in range(sim.boxes.nAtoms[iBox]):
+            iOff = sim.boxes.MAXATOMS * iBox + ii
+            force = sim.atoms.f[iOff,:]
+            print "%d:  %20.10g %20.10g %20.10g"%(iOff+1, force[0], force[1], force[2])
+    
+
 def timestep(sim, nSteps, dt):
     for ii in range(nSteps):
         advanceVelocity(sim, sim.atoms, 0.5*dt)
@@ -88,9 +110,9 @@ def printPerformanceResult(sim, elapsedTime):
 
 def parseCommandLine():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-x","--nx", type=int, default=20, help="number of unit cells in x")
-    parser.add_argument("-y","--ny", type=int, default=20, help="number of unit cells in y")
-    parser.add_argument("-z","--nz", type=int, default=20, help="number of unit cells in z")
+    parser.add_argument("-x","--nx", type=int, default=4, help="number of unit cells in x")
+    parser.add_argument("-y","--ny", type=int, default=4, help="number of unit cells in y")
+    parser.add_argument("-z","--nz", type=int, default=4, help="number of unit cells in z")
     parser.add_argument("-N","--nSteps", type=int, default=100, help="total number of time steps")
     parser.add_argument("-n","--printRate", type=int, default=10, help="number of steps between output")
     parser.add_argument("-D","--dt", type=float, default=1, help="time step (in fs)")

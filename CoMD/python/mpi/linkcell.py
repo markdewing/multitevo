@@ -130,7 +130,7 @@ class linkcell:
                 else:
                     ink -= self.gridSize[1]*self.gridSize[2]
                     ix = self.gridSize[0] + 1
-                ix = 1 + ink % self.gridSize[1]
+                iy = 1 + ink % self.gridSize[1]
                 iz = 1 + ink / self.gridSize[1]
 
             elif ink < 2*self.gridSize[2]*(self.gridSize[1] + self.gridSize[0] + 2):

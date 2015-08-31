@@ -11,8 +11,7 @@ def initLinkCells(sim, box_size):
 
     nTotalBoxes = nLocalBoxes + nHaloBoxes
 
-    return linkcell(nLocalBoxes, nTotalBoxes, gridSize, 1.0/boxSize)
-
+    return linkcell(nLocalBoxes, nTotalBoxes, gridSize, 1.0/boxSize) 
 
 class linkcell:
     def __init__(self, nLocalBoxes, nTotalBoxes, gridSize, invBoxSize):
@@ -67,7 +66,6 @@ class linkcell:
         ix = int(math.floor(r[0]*self.invBoxSize[0]))
         iy = int(math.floor(r[1]*self.invBoxSize[1]))
         iz = int(math.floor(r[2]*self.invBoxSize[2]))
-        #print 'ix,iy,iz',ix,iy,iz
         return self.getBoxFromTuple(ix, iy, iz)
 
     def putAtomInBox(self, atoms, gid, iType, x, y, z, px=0.0, py=0.0, pz=0.0):
@@ -104,7 +102,7 @@ class linkcell:
                 else:
                     ink -= self.gridSize[1]*self.gridSize[2]
                     ix = self.gridSize[0] + 1
-                ix = 1 + ink % self.gridSize[1]
+                iy = 1 + ink % self.gridSize[1]
                 iz = 1 + ink / self.gridSize[1]
 
             elif ink < 2*self.gridSize[2]*(self.gridSize[1] + self.gridSize[0] + 2):
