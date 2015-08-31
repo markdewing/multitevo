@@ -10,7 +10,7 @@ Directory layout is
   
 Currently, the only app is CoMD (molecular dynamics).
 There are implementations in Python and Julia.
-Find more information about the available variants in [README_CoMD](CoMD/README_CoMD.md)
+Find more information about the available variants in the [README](CoMD/README.md) in the CoMD direectory.
   
 
   
