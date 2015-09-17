@@ -6,7 +6,7 @@ import random
 
 ftype = np.float
 
-class atoms:
+class Atoms(object):
     def __init__(self, n):
         self.r = np.zeros( (n,3), dtype=ftype )
         self.f = np.zeros( (n,3), dtype=ftype )
@@ -22,7 +22,7 @@ class atoms:
 
 def initAtoms(nx, ny, nz):
     natom = 4*nx*ny*nz
-    return atoms(natom)
+    return Atoms(natom)
 
 
 def createFccLattice(nx, ny, nz, lat, atoms):

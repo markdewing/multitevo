@@ -11,9 +11,9 @@ def initLinkCells(sim, box_size):
 
     nTotalBoxes = nLocalBoxes + nHaloBoxes
 
-    return linkcell(nLocalBoxes, nTotalBoxes, gridSize, 1.0/boxSize) 
+    return LinkCell(nLocalBoxes, nTotalBoxes, gridSize, 1.0/boxSize)
 
-class linkcell:
+class LinkCell(object):
     def __init__(self, nLocalBoxes, nTotalBoxes, gridSize, invBoxSize):
         self.MAXATOMS = 64
         self.nLocalBoxes = nLocalBoxes

@@ -2,23 +2,23 @@
 import ljforce
 import initatoms
 
-class SimFlat:
+class SimFlat(object):
     def __init__(self, nSteps, printRate, dt):
         self.nSteps = nSteps
         self.printRate = printRate
         self.dt = dt
         self.atoms = None
-        self.pot = ljforce.lj_pot()
+        self.pot = ljforce.LJ_Pot()
         self.species = initSpecies(self.pot)
         self.ePot = 0.0
         self.eKinetic = 0.0
 
-class species:
+class Species(object):
     def __init__(self, mass):
         self.mass = mass
 
 def initSpecies(pot):
-    return [species(pot.mass)]
+    return [Species(pot.mass)]
 
 def initSimulation(cmd):
     sim = SimFlat(cmd.nSteps, cmd.printRate, cmd.dt)

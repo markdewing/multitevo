@@ -2,7 +2,7 @@
 import numpy as np
 import constants
 
-class lj_pot:
+class LJ_Pot(object):
     def __init__(self):
         self.sigma = 2.315
         self.epsilon = 0.167
