@@ -15,7 +15,7 @@ class lj_pot:
     def output(self):
         pass
 
-    def computeForce(self, atoms, sim):
+    def computeForce(self, atoms):
         POT_SHIFT = 1.0
         #POT_SHIFT = 0.0
         rCut2 = self.cutoff * self.cutoff
@@ -80,5 +80,5 @@ class lj_pot:
                     atoms.f[j,2] += dz*fr
 
         ePot = ePot*4.0*self.epsilon
-        sim.ePot = ePot
+        return ePot
 
