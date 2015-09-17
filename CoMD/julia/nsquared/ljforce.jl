@@ -59,22 +59,20 @@ function computeForce(pot, sim)
                 end
                 r2 = dot(dd, dd)
 
-                if r2 > rCut2
-                    continue
+                if r2 <= rCut2
+                    ir2 = 1.0/r2
+
+                    r6 = s6 * (ir2*ir2*ir2)
+
+                    eLocal = r6*(r6 - 1.0) - eShift
+
+                    ePot += eLocal
+
+                    fr = -4.0 * pot.epsilon * r6 * ir2*(12.0*r6 - 6.0)
+
+                    atoms.f[:,i] -= dd*fr
+                    atoms.f[:,j] += dd*fr
                 end
-
-                ir2 = 1.0/r2
-
-                r6 = s6 * (ir2*ir2*ir2)
-
-                eLocal = r6*(r6 - 1.0) - eShift
-
-                ePot += eLocal
-
-                fr = -4.0 * pot.epsilon * r6 * ir2*(12.0*r6 - 6.0)
-
-                atoms.f[:,i] -= dd*fr
-                atoms.f[:,j] += dd*fr
             end
         end
     end
