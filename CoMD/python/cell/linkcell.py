@@ -1,9 +1,10 @@
+from __future__ import print_function, division
 
 import numpy as np
 import math
 
 def initLinkCells(sim, box_size):
-    gridSize = np.array([int(b/sim.pot.cutoff) for b in box_size])
+    gridSize = np.array([int(b/sim.pot.cutoff) for b in box_size], dtype=np.int)
     boxSize = box_size*1.0/gridSize
     nLocalBoxes = gridSize[0]*gridSize[1]*gridSize[2]
 
@@ -56,8 +57,8 @@ class linkcell:
             iBox = ix + self.gridSize[0]*iy + self.gridSize[0]*self.gridSize[1]*iz
 
         if iBox >= self.nTotalBoxes:
-            print 'iBox too large',iBox,self.nTotalBoxes
-            print 'ix,iy,iz',ix,iy,iz
+            print('iBox too large',iBox,self.nTotalBoxes)
+            print('ix,iy,iz',ix,iy,iz)
         assert iBox >=0
         assert iBox < self.nTotalBoxes
         return iBox
@@ -91,9 +92,9 @@ class linkcell:
         # local box
         if iBox < self.nLocalBoxes:
             ix = iBox % self.gridSize[0]
-            iBox /= self.gridSize[0]
+            iBox //= self.gridSize[0]
             iy = iBox % self.gridSize[1]
-            iz = iBox / self.gridSize[1]
+            iz = iBox // self.gridSize[1]
         else:   # halo box
             ink = iBox - self.nLocalBoxes
             if ink < 2*self.gridSize[1]*self.gridSize[2]:
@@ -103,7 +104,7 @@ class linkcell:
                     ink -= self.gridSize[1]*self.gridSize[2]
                     ix = self.gridSize[0] + 1
                 iy = 1 + ink % self.gridSize[1]
-                iz = 1 + ink / self.gridSize[1]
+                iz = 1 + ink // self.gridSize[1]
 
             elif ink < 2*self.gridSize[2]*(self.gridSize[1] + self.gridSize[0] + 2):
                 ink -= 2 * self.gridSize[2] * self.gridSize[1]
@@ -113,7 +114,7 @@ class linkcell:
                     ink -= (self.gridSize[0] + 2)*self.gridSize[2]
                     iy = self.gridSize[1] + 1
                 ix = ink % (self.gridSize[0] + 2)
-                iz = 1 + ink/(self.gridSize[0] + 2)
+                iz = 1 + ink // (self.gridSize[0] + 2)
             else:
                 ink -= 2*self.gridSize[2]*(self.gridSize[1] + self.gridSize[0] + 2)
                 if ink < (self.gridSize[0] + 2)*(self.gridSize[1] + 2):
@@ -122,7 +123,7 @@ class linkcell:
                     ink -= (self.gridSize[0] + 2)*(self.gridSize[1] + 2)
                     iz = self.gridSize[2] + 1
                 ix = ink % (self.gridSize[0] + 2)
-                iy = ink / (self.gridSize[0] + 2)
+                iy = ink // (self.gridSize[0] + 2)
 
             ix -= 1
             iy -= 1

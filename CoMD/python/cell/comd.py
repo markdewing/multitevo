@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 
 import simflat
 import initatoms
@@ -38,21 +39,21 @@ def dumpPos(sim):
         for ii in range(sim.boxes.nAtoms[iBox]):
             iOff = sim.boxes.MAXATOMS * iBox + ii
             pos = sim.atoms.r[iOff,:]
-            print "%d:  %20.10f %20.10f %20.10f"%(iOff+1, pos[0], pos[1], pos[2])
+            print("%d:  %20.10f %20.10f %20.10f"%(iOff+1, pos[0], pos[1], pos[2]))
 
 def dumpVel(sim):
     for iBox in range(sim.boxes.nLocalBoxes):
         for ii in range(sim.boxes.nAtoms[iBox]):
             iOff = sim.boxes.MAXATOMS * iBox + ii
             vel = sim.atoms.p[iOff,:]
-            print "%d:  %20.10g %20.10g %20.10g"%(iOff+1, vel[0], vel[1], vel[2])
+            print("%d:  %20.10g %20.10g %20.10g"%(iOff+1, vel[0], vel[1], vel[2]))
 
 def dumpForce(sim):
     for iBox in range(sim.boxes.nLocalBoxes):
         for ii in range(sim.boxes.nAtoms[iBox]):
             iOff = sim.boxes.MAXATOMS * iBox + ii
             force = sim.atoms.f[iOff,:]
-            print "%d:  %20.10g %20.10g %20.10g"%(iOff+1, force[0], force[1], force[2])
+            print("%d:  %20.10g %20.10g %20.10g"%(iOff+1, force[0], force[1], force[2]))
     
 
 def timestep(sim, nSteps, dt):
@@ -62,7 +63,7 @@ def timestep(sim, nSteps, dt):
         simflat.redistributeAtoms(sim, sim.atoms)
         sim.pot.computeForce(sim.atoms, sim)
         advanceVelocity(sim, sim.atoms, 0.5*dt)
-    #print 'ke,pe = ',initatoms.kineticEnergy(sim)/sim.atoms.nAtoms,sim.ePot/sim.atoms.nAtoms
+    #print('ke,pe = ',initatoms.kineticEnergy(sim)/sim.atoms.nAtoms,sim.ePot/sim.atoms.nAtoms)
     sim.eKinetic = initatoms.kineticEnergy(sim)
 
 
@@ -70,8 +71,8 @@ def initValidate(sim):
     ke = initatoms.kineticEnergy(sim)
     pe = sim.ePot
 
-    print "Initial PE (cohesive energy) : ",pe/sim.atoms.nGlobal
-    print "Initial energy : ",(ke+pe)/sim.atoms.nGlobal," atom count : ",sim.atoms.nGlobal
+    print("Initial PE (cohesive energy) : ",pe/sim.atoms.nGlobal)
+    print("Initial energy : ",(ke+pe)/sim.atoms.nGlobal," atom count : ",sim.atoms.nGlobal)
 
 firstCall = True
 iStepPrev = -1
@@ -80,9 +81,9 @@ def printInfo(sim, iStep, elapsedTime):
     if firstCall:
         firstCall = False
         #print "# Loop  Time(fs)   Total Energy  Potential Energy   Kinetic Energy  Temperature  Performance (us/atom)  # Atoms"
-        print "#{:>100s}".format("Performance")
-        print "#{:>6s} {:>10s} {:>18s} {:>18s} {:>18s} {:>12s} {:^12s} {:^12s}".\
-            format("Loop", "Time(fs)", "Total Energy", "Potential Energy", "Kinetic Energy", "Temperature",  "(us/atom)", "# Atoms")
+        print("#{:>100s}".format("Performance"))
+        print("#{:>6s} {:>10s} {:>18s} {:>18s} {:>18s} {:>12s} {:^12s} {:^12s}".\
+            format("Loop", "Time(fs)", "Total Energy", "Potential Energy", "Kinetic Energy", "Temperature",  "(us/atom)", "# Atoms"))
 
     nEval = iStep - iStepPrev
     iStepPrev = iStep
@@ -95,7 +96,7 @@ def printInfo(sim, iStep, elapsedTime):
     Temp = (sim.eKinetic/n)/(constants.kB_eV * 1.5)
     timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
 
-    print " {:6d} {:10.2f} {:18.12f} {:18.12f} {:18.12f} {:12.4f} {:10.4f} {:12d}".format(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n)
+    print(" {:6d} {:10.2f} {:18.12f} {:18.12f} {:18.12f} {:12.4f} {:10.4f} {:12d}".format(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n))
     #print iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n
 
 def printPerformanceResult(sim, elapsedTime):
@@ -103,9 +104,9 @@ def printPerformanceResult(sim, elapsedTime):
     nEval = sim.nSteps
     timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
 
-    print
-    print "Average all atom update rate: %10.2f us/atom" % timePerAtom
-    print
+    print()
+    print("Average all atom update rate: %10.2f us/atom" % timePerAtom)
+    print()
 
 
 def parseCommandLine():

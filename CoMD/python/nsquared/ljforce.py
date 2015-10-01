@@ -80,5 +80,5 @@ class lj_pot:
                     atoms.f[j,2] += dz*fr
 
         ePot = ePot*4.0*self.epsilon
-        sim.ePot = ePot
+        return ePot
 

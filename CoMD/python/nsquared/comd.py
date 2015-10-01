@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 
 import simflat
 import initatoms
@@ -29,9 +30,9 @@ def timestep(sim, nSteps, dt):
         advanceVelocity(sim.atoms, 0.5*dt)
         advancePosition(sim, sim.atoms, dt)
         # redistributeAtoms
-        sim.pot.computeForce(sim.atoms, sim)
+        sim.ePot = sim.pot.computeForce(sim.atoms, sim)
         advanceVelocity(sim.atoms, 0.5*dt)
-    #print 'ke,pe = ',initatoms.kineticEnergy(sim)/sim.atoms.nAtoms,sim.ePot/sim.atoms.nAtoms
+    #print('ke,pe = ',initatoms.kineticEnergy(sim)/sim.atoms.nAtoms,sim.ePot/sim.atoms.nAtoms)
     sim.eKinetic = initatoms.kineticEnergy(sim)
 
 
@@ -39,8 +40,8 @@ def initValidate(sim):
     ke = initatoms.kineticEnergy(sim)
     pe = sim.ePot
 
-    print "Initial PE (cohesive energy) : ",pe/sim.atoms.nAtoms
-    print "Initial energy : ",(ke+pe)/sim.atoms.nAtoms," atom count : ",sim.atoms.nAtoms
+    print("Initial PE (cohesive energy) : ",pe/sim.atoms.nAtoms)
+    print("Initial energy : ",(ke+pe)/sim.atoms.nAtoms," atom count : ",sim.atoms.nAtoms)
 
 firstCall = True
 iStepPrev = -1
@@ -48,10 +49,10 @@ def printInfo(sim, iStep, elapsedTime):
     global firstCall, iStepPrev
     if firstCall:
         firstCall = False
-        #print "# Loop  Time(fs)   Total Energy  Potential Energy   Kinetic Energy  Temperature  Performance (us/atom)  # Atoms"
-        print "#{:>100s}".format("Performance")
-        print "#{:>6s} {:>10s} {:>18s} {:>18s} {:>18s} {:>12s} {:^12s} {:^12s}".\
-            format("Loop", "Time(fs)", "Total Energy", "Potential Energy", "Kinetic Energy", "Temperature",  "(us/atom)", "# Atoms")
+        #print("# Loop  Time(fs)   Total Energy  Potential Energy   Kinetic Energy  Temperature  Performance (us/atom)  # Atoms")
+        print("#{:>100s}".format("Performance"))
+        print("#{:>6s} {:>10s} {:>18s} {:>18s} {:>18s} {:>12s} {:^12s} {:^12s}".\
+            format("Loop", "Time(fs)", "Total Energy", "Potential Energy", "Kinetic Energy", "Temperature",  "(us/atom)", "# Atoms"))
 
     nEval = iStep - iStepPrev
     iStepPrev = iStep
@@ -65,16 +66,16 @@ def printInfo(sim, iStep, elapsedTime):
     timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
 
 
-    print " {:6d} {:10.2f} {:18.12f} {:18.12f} {:18.12f} {:12.4f} {:10.4f} {:12d}".format(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n)
-    #print iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n
+    print(" {:6d} {:10.2f} {:18.12f} {:18.12f} {:18.12f} {:12.4f} {:10.4f} {:12d}".format(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n))
+    #print(iStep, simtime, eTotal, eU, eK, Temp, timePerAtom, n)
 
 def printPerformanceResults(sim, elapsedTime):
     n = sim.atoms.nAtoms
     nEval = sim.nSteps
     timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
-    print
-    print "Average all atom update rate: %10.2f us/atom" % timePerAtom
-    print
+    print()
+    print("Average all atom update rate: %10.2f us/atom" % timePerAtom)
+    print()
 
 
 def parseCommandLine():
@@ -96,12 +97,12 @@ def run_comd():
     cmd = parseCommandLine()
     # init subsystems
     sim = simflat.initSimulation(cmd)
-    print 'nAtoms = ',sim.atoms.nAtoms
+    print('nAtoms = ',sim.atoms.nAtoms)
     #for i in range(min(sim.atoms.nAtoms, 10)):
     #for i in range(sim.atoms.nAtoms):
     #    print i,sim.atoms.r[i,:]
 
-    sim.pot.computeForce(sim.atoms, sim)
+    sim.ePot = sim.pot.computeForce(sim.atoms, sim)
     sim.eKinetic = initatoms.kineticEnergy(sim)
 
     initValidate(sim)
