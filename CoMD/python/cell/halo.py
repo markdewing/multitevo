@@ -2,7 +2,7 @@ from __future__ import print_function, division
 
 import numpy as np
 
-class Halo:
+class Halo(object):
     HALO_X_MINUS = 0
     HALO_X_PLUS = 1
     HALO_Y_MINUS = 2

@@ -1,7 +1,7 @@
 
 import constants
 
-class lj_pot:
+class LJ_Pot(object):
     def __init__(self):
         self.sigma = 2.315
         self.epsilon = 0.167
@@ -15,7 +15,7 @@ class lj_pot:
     def output(self):
         pass
 
-    def computeForce(self, atoms, sim):
+    def computeForce(self, atoms):
         POT_SHIFT = 1.0
         #POT_SHIFT = 0.0
         rCut2 = self.cutoff * self.cutoff
@@ -58,26 +58,25 @@ class lj_pot:
                         dz -= atoms.bounds[2]
                     r2 += dz*dz
 
-                    if r2 > rCut2:
-                        continue
+                    if r2 <= rCut2:
 
-                    ir2 = 1.0/r2
+                        ir2 = 1.0/r2
 
-                    r6 = s6 * (ir2*ir2*ir2)
-                    eLocal = r6*(r6-1.0) - eShift
+                        r6 = s6 * (ir2*ir2*ir2)
+                        eLocal = r6*(r6-1.0) - eShift
 
-                    ePot += eLocal
-                    iPot += 1
+                        ePot += eLocal
+                        iPot += 1
 
 
-                    fr = -4.0*self.epsilon * r6 * ir2*(12.0*r6 - 6.0)
+                        fr = -4.0*self.epsilon * r6 * ir2*(12.0*r6 - 6.0)
 
-                    atoms.f[i,0] -= dx*fr
-                    atoms.f[j,0] += dx*fr
-                    atoms.f[i,1] -= dy*fr
-                    atoms.f[j,1] += dy*fr
-                    atoms.f[i,2] -= dz*fr
-                    atoms.f[j,2] += dz*fr
+                        atoms.f[i,0] -= dx*fr
+                        atoms.f[j,0] += dx*fr
+                        atoms.f[i,1] -= dy*fr
+                        atoms.f[j,1] += dy*fr
+                        atoms.f[i,2] -= dz*fr
+                        atoms.f[j,2] += dz*fr
 
         ePot = ePot*4.0*self.epsilon
         return ePot

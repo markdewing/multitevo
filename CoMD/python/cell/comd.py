@@ -61,7 +61,7 @@ def timestep(sim, nSteps, dt):
         advanceVelocity(sim, sim.atoms, 0.5*dt)
         advancePosition(sim, sim.atoms, dt)
         simflat.redistributeAtoms(sim, sim.atoms)
-        sim.pot.computeForce(sim.atoms, sim)
+        sim.ePot = sim.pot.computeForce(sim.atoms, sim)
         advanceVelocity(sim, sim.atoms, 0.5*dt)
     #print('ke,pe = ',initatoms.kineticEnergy(sim)/sim.atoms.nAtoms,sim.ePot/sim.atoms.nAtoms)
     sim.eKinetic = initatoms.kineticEnergy(sim)
@@ -129,7 +129,7 @@ def run_comd():
     # init subsystems
     sim = simflat.initSimulation(cmd)
 
-    sim.pot.computeForce(sim.atoms, sim)
+    sim.ePot = sim.pot.computeForce(sim.atoms, sim)
     sim.eKinetic = initatoms.kineticEnergy(sim)
 
     initValidate(sim)

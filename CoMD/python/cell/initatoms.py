@@ -5,7 +5,7 @@ import numpy as np
 import math
 import random
 
-class atoms:
+class Atoms(object):
     def __init__(self, n):
         self.r = np.zeros( (n,3) )
         self.f = np.zeros( (n,3) )
@@ -23,7 +23,7 @@ class atoms:
         self.bounds[2] = nz*lat
 
 def initAtoms(maxatoms):
-    return atoms(maxatoms)
+    return Atoms(maxatoms)
 
 
 def createFccLattice(nx, ny, nz, lat, atoms, boxes):

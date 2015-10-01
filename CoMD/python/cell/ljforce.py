@@ -3,7 +3,7 @@ from __future__ import print_function, division
 import numpy as np
 import constants
 
-class lj_pot:
+class LJ_Pot(object):
     def __init__(self):
         self.sigma = 2.315
         self.epsilon = 0.167
@@ -99,4 +99,4 @@ class lj_pot:
                         atoms.f[jOff,2] += dz*fr
 
         ePot = ePot*4.0*self.epsilon
-        sim.ePot = ePot
+        return ePot
