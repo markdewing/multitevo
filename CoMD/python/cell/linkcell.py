@@ -152,13 +152,13 @@ class linkcell:
 
     def moveAtom(self, atoms, iId, iBox, jBox):
         nj = self.nAtoms[jBox]
-        self.copyAtom(iId, iBox, nj, jBox)
+        self.copyAtom(atoms, iId, iBox, nj, jBox)
         self.nAtoms[jBox] += 1
 
         self.nAtoms[iBox] -= 1
         ni = self.nAtoms[iBox]
         if ni:
-            self.copyAtom(ni, iBox, iId, iBox)
+            self.copyAtom(atoms, ni, iBox, iId, iBox)
         if jBox > self.nLocalBoxes:
             atoms.nLocal -= 1
 

@@ -185,7 +185,7 @@ class linkcell:
         self.nAtoms[iBox] -= 1
         ni = self.nAtoms[iBox]
         if ni:
-            self.copyAtom(ni, iBox, iId, iBox)
+            self.copyAtom(atoms, ni, iBox, iId, iBox)
         if jBox > self.nLocalBoxes:
             atoms.nLocal -= 1
 
