@@ -102,11 +102,7 @@ def run_comd():
     #for i in range(sim.atoms.nAtoms):
     #    print i,sim.atoms.r[i,:]
 
-<<<<<<< HEAD
-    sim.ePot = sim.pot.computeForce(sim.atoms, sim)
-=======
     sim.ePot = sim.pot.computeForce(sim.atoms)
->>>>>>> 42e0a4d8954225cc6353d77f22563d3344d3bb98
     sim.eKinetic = initatoms.kineticEnergy(sim)
 
     initValidate(sim)
