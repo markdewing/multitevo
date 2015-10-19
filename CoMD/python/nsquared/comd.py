@@ -71,7 +71,7 @@ def printInfo(sim, iStep, elapsedTime):
 
 def printPerformanceResults(sim, elapsedTime):
     n = sim.atoms.nAtoms
-    nEval = sim.nSteps
+    nEval = sim.nSteps - sim.nSkip * sim.printRate
     timePerAtom = 1.0e6 * elapsedTime/(n*nEval)
     print()
     print("Average all atom update rate: %10.2f us/atom" % timePerAtom)
@@ -85,6 +85,7 @@ def parseCommandLine():
     parser.add_argument("-z","--nz", type=int, default=4, help="number of unit cells in z")
     parser.add_argument("-N","--nSteps", type=int, default=100, help="total number of time steps")
     parser.add_argument("-n","--printRate", type=int, default=10, help="number of steps between output")
+    parser.add_argument("--skip", type=int, default=1, help="number of blocks to skip in averaged output")
     parser.add_argument("-D","--dt", type=float, default=1, help="time step (in fs)")
     parser.add_argument("-l","--lat", type=float, default=-1, help="lattice parameter (Angstroms)")
     parser.add_argument("-T","--temp", type=float, default=600, help="initial temperature (K)")
@@ -120,7 +121,8 @@ def run_comd():
         end = time.clock()
 
         timestepTimeOneIteration = end - start
-        timestepTime += timestepTimeOneIteration
+        if jStep >= sim.nSkip * sim.printRate:
+            timestepTime += timestepTimeOneIteration
 
         iStep += sim.printRate
 

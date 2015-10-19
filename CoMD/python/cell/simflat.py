@@ -7,9 +7,10 @@ import halo
 import numpy as np
 
 class SimFlat(object):
-    def __init__(self, nSteps, printRate, dt):
+    def __init__(self, nSteps, printRate, dt, nSkip):
         self.nSteps = nSteps
         self.printRate = printRate
+        self.nSkip = nSkip
         self.dt = dt
         self.atoms = None
         self.pot = ljforce.LJ_Pot()
@@ -33,7 +34,7 @@ def redistributeAtoms(sim, atoms):
     sim.atomHalo.haloExchange(sim)
 
 def initSimulation(cmd):
-    sim = SimFlat(cmd.nSteps, cmd.printRate, cmd.dt)
+    sim = SimFlat(cmd.nSteps, cmd.printRate, cmd.dt, cmd.skip)
 
     latticeConstant = cmd.lat
 

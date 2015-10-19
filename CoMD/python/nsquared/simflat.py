@@ -3,9 +3,10 @@ import ljforce
 import initatoms
 
 class SimFlat(object):
-    def __init__(self, nSteps, printRate, dt):
+    def __init__(self, nSteps, printRate, dt, nSkip):
         self.nSteps = nSteps
         self.printRate = printRate
+        self.nSkip = nSkip
         self.dt = dt
         self.atoms = None
         self.pot = ljforce.LJ_Pot()
@@ -21,7 +22,7 @@ def initSpecies(pot):
     return [Species(pot.mass)]
 
 def initSimulation(cmd):
-    sim = SimFlat(cmd.nSteps, cmd.printRate, cmd.dt)
+    sim = SimFlat(cmd.nSteps, cmd.printRate, cmd.dt, cmd.skip)
 
     latticeConstant = cmd.lat
 
