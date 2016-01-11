@@ -21,7 +21,7 @@ atoms = createFccLattice[nx, ny, nz, LJPot`lat]
 p = setTemperature[Length[atoms], LJPot`mass, temperature]
 
 ke = kineticEnergy[p, LJPot`mass];
-{F, pe} = LJPot`computeForce[atoms, bounds]
+{F, pe} = LJPot`computeForceSym[atoms, bounds]
 
 
 (* Formatted output *)
@@ -80,7 +80,7 @@ timestep[nSteps_, dt_, atoms_, p_, bounds_, F_] := Module[
  (
   p2 += 0.5*dt*F2; (* advanceVelocity *)
   atoms2 += dt*p2/LJPot`mass; (* advancePosition *)
-  {F2, ePot} = LJPot`computeForce[atoms2, bounds];
+  {F2, ePot} = LJPot`computeForceSym[atoms2, bounds];
   p2 += 0.5*dt*F2; (* advanceVelocity *)
  ), {nSteps}];
  {atoms2, p2, F2, ePot})
