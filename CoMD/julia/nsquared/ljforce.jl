@@ -1,7 +1,9 @@
 
 include("constants.jl")
 
-type LJ_Pot
+using LinearAlgebra
+
+mutable struct LJ_Pot
     sigma::Float
     epsilon::Float
     mass::Float
@@ -34,7 +36,7 @@ function computeForce(pot, sim)
     rCut2 = pot.cutoff * pot.cutoff
 
     for i in 1:atoms.nAtoms
-        atoms.f[:,i] = 0.0
+        atoms.f[:,i] .= 0.0
     end
 
     ePot = 0.0

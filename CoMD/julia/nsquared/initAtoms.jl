@@ -1,7 +1,7 @@
 
 include("constants.jl")
 
-type Atoms
+mutable struct Atoms
     r::Array{Float,2}
     f::Array{Float,2}
     p::Array{Float,2}

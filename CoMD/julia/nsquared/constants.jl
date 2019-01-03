@@ -23,4 +23,4 @@ hartreeToEv = 27.21138505
 bohrToAngs = 0.52917721092
 
 # Single or double precision
-typealias Float Float64
+const Float = Float64
