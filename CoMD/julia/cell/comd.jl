@@ -116,4 +116,19 @@ function parseCommandLine()
     return parse_args(s)
 end
 
+#function parseCommandLine()
+#    cmd = Dict()
+#    cmd["nx"] = 10
+#    cmd["ny"] = 10
+#    cmd["nz"] = 10
+#    cmd["nSteps"] = 100
+#    cmd["printRate"] = 10
+#    cmd["dt"] = 1.0
+#    cmd["lat"] = -1.0
+#    cmd["temp"] = 600.0
+#
+#    return cmd
+#end
+
+
 run_comd()
