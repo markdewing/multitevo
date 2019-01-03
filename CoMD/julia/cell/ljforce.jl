@@ -1,7 +1,9 @@
 
 include("constants.jl")
 
-type LJ_Pot
+using LinearAlgebra
+
+mutable struct LJ_Pot
     sigma::Float
     epsilon::Float
     mass::Float
@@ -36,7 +38,7 @@ function computeForce(pot, sim)
     for iBox in 1:sim.boxes.nLocalBoxes
         iOff = sim.boxes.MAXATOMS * (iBox-1) + 1
         for ii in 1:sim.boxes.nAtoms[iBox]
-            atoms.f[:, iOff] = 0.0
+            atoms.f[:, iOff] .= 0.0
             iOff += 1
         end
     end

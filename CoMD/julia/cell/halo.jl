@@ -12,7 +12,7 @@ HALO_X_AXIS = 1
 HALO_Y_AXIS = 2
 HALO_Z_AXIS = 3
 
-type HaloExchange
+mutable struct HaloExchange
     nCells::Array{Int, 1}
     pbcFactor::Array{Float, 2}
     cellList::Array{Array{Int, 1}, 1}
@@ -31,7 +31,7 @@ function initHalo(boxes)
     nCells[HALO_Y_PLUS] = nCells[HALO_Y_MINUS]
     nCells[HALO_Z_PLUS] = nCells[HALO_Z_MINUS]
 
-    cellList = Array(Any, 6)
+    cellList = Array{Any}(undef, 6)
     for ii in 1:6
         cellList[ii] = mkAtomCellList(boxes, ii, nCells[ii])
     end
@@ -73,7 +73,7 @@ function mkAtomCellList(boxes, iFace, nCell)
         zBegin = zEnd - 2
     end
 
-    list = Array(Int, nCell)
+    list = Array{Int}(undef,nCell)
 
     ii = 1
     for ix in xBegin:xEnd-1
@@ -104,7 +104,7 @@ function exchangeData(halo, iAxis, atoms, boxes)
     unloadAtomsBuffer(halo, atoms, boxes, faceP, bufM)
 end
 
-type TransferBuffer
+mutable struct TransferBuffer
     gid::Int
     species::Int
     r::Array{Float}
@@ -112,7 +112,8 @@ type TransferBuffer
 end
 
 function loadAtomsBuffer(halo, atoms, boxes, face)
-    shift = transpose(halo.pbcFactor[face,:]) .* atoms.bounds
+    shift = halo.pbcFactor[face,:] .* atoms.bounds
+
     nCells = halo.nCells[face]
     cellList = halo.cellList[face]
     size = 0
@@ -123,7 +124,7 @@ function loadAtomsBuffer(halo, atoms, boxes, face)
         end
     end
 
-    buf = Array(TransferBuffer, size)
+    buf = Array{TransferBuffer}(undef, size)
     idx = 1
     for iCell in 1:nCells
         iBox = cellList[iCell]

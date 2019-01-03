@@ -4,6 +4,7 @@ include("initAtoms.jl")
 include("simflat.jl")
 include("ljforce.jl")
 
+using Printf
 using ArgParse
 
 # Translation of CoMD to Julia
@@ -64,9 +65,10 @@ function run_comd()
     iStep = 0
     for jStep in 1:sim.printRate:sim.nSteps
         printInfo(sim, iStep, timestepTimeOneIteration)
-        tic()
+        start = time_ns()
         timestep(sim, sim.printRate, sim.dt)
-        timestepTimeOneIteration = toq()
+        stop = time_ns()
+        timestepTimeOneIteration = (stop - start)*1e-9
         timestepTime += timestepTimeOneIteration
         iStep += sim.printRate
     end

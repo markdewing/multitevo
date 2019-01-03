@@ -1,7 +1,7 @@
 
 include("constants.jl")
 
-type LinkCell
+mutable struct LinkCell
     MAXATOMS::Int
     nLocalBoxes::Int
     nTotalBoxes::Int

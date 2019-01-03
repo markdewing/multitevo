@@ -6,7 +6,9 @@ include("ljforce.jl")
 include("linkcell.jl")
 include("halo.jl")
 
-type Species
+using Printf
+
+mutable struct Species
     mass
 end
 
@@ -17,7 +19,7 @@ function initSpecies(pot)
 end
 
 
-type SimFlat
+mutable struct SimFlat
     nSteps::Int
     printRate::Int
     dt::Float
